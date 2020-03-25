@@ -6,6 +6,7 @@ decorator==4.4.2
 dj-database-url==0.5.0
 dj-static==0.0.6
 Django==3.0.4
+django-extensions==1.7.2
 django-storages==1.9.1
 docutils==0.15.2
 ipython==7.13.0
@@ -29,3 +30,4 @@ static3==0.7.0
 traitlets==4.3.3
 urllib3==1.25.8
 wcwidth==0.1.9
+django-extensions==1.7.2
