@@ -8,3 +8,5 @@ sqlparse==0.3.1
 static3==0.7.0
 gunicorn==19.8.1
 psycopg2==2.7.4
+boto3==1.12.29
+django-storages==1.9.1
