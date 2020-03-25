@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'eventex.core',
     'storages',
+    'django_extensions',
 ]
 
 #To keep cache for a long time while
