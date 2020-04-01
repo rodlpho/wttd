@@ -41,7 +41,7 @@ class SubscribeTest(TestCase):
 class SubscribePostTest(TestCase):
     def setUp(self):
         data = dict(name='Henrique Bastos', cpf='12345678901',
-                    email='henrique@bastos.net', phone='21-11111-1111')
+                    email='rodolphodeales@gmail.com', phone='21-11111-1111')
 
         self.resp = self.client.post('/inscricao/',data)
 
@@ -59,13 +59,13 @@ class SubscribePostTest(TestCase):
 
     def test_subscription_email_from(self):
         email = mail.outbox[0]
-        expected = 'contato@eventex.com.br'
+        expected = 'rodolphodeales@gmail.com'
 
         self.assertEqual(expected, email.from_email)
 
     def test_subscription_email_to(self):
         email = mail.outbox[0]
-        expected = ['contato@eventex.com.br', 'henrique@bastos.net']
+        expected = ['rodolphodeales@gmail.com', 'rodolphodeales@gmail.com']
 
         self.assertEqual(expected, email.to)
 
@@ -74,7 +74,7 @@ class SubscribePostTest(TestCase):
 
         self.assertIn('Henrique Bastos', email.body)
         self.assertIn('12345678901', email.body)
-        self.assertIn('henrique@bastos.net', email.body)
+        self.assertIn('rodolphodeales@gmail.com', email.body)
         self.assertIn('21-11111-1111', email.body)
 
 class SubscribeInvalidPost(TestCase):
@@ -102,4 +102,21 @@ class SubscribeSuccessMessage(TestCase):
         data = dict(name='Rodolpho Deales', cpf='41584467835',
                     email='rodolphodeales@gmail.com', phone='9983328906')
         response = self.client.post('/inscricao/', data, follow=True)
-        self.assertContains(response, 'Inscrição realizada com sucesso!' )
+        self.assertContains(response, 'Inscrição realizada com sucesso!')
+
+
+class HomeTest(TestCase):
+    def setUp(self):
+        self.response = self.client.get('/')
+
+    def test_get(self):
+        """GET / must return status code 200"""
+        self.assertEqual(200, self.response.status_code)
+
+    def test_template(self):
+        """Must use index.html"""
+        self.assertTemplateUsed(self.response, 'index.html')
+
+    def test_subscription_link(self):
+        self.assertContains(self.response, 'href="/inscricao/"')
+
