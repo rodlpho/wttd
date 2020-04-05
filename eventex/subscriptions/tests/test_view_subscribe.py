@@ -2,7 +2,7 @@ from django.core import mail
 from django.test import TestCase
 from eventex.subscriptions.forms import SubscriptionForm
 
-class SubscribeTest(TestCase):
+class SubscribeGet(TestCase):
     def setUp(self):
         self.resp = self.client.get('/inscricao/')
 
@@ -15,14 +15,17 @@ class SubscribeTest(TestCase):
         response = self.client.get('/inscricao/')
         self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
 
-
     def test_html(self):
         """Html must contain input tags"""
-        self.assertContains(self.resp, '<form')
-        self.assertContains(self.resp, '<input',6)
-        self.assertContains(self.resp, 'type="text"',3)
-        self.assertContains(self.resp, 'type="email"')
-        self.assertContains(self.resp, 'type="submit"')
+        tags = (('<form', 1),
+                ('<input', 6),
+                ('type="text"', 3),
+                ('type="email"', 1),
+                ('type="submit"', 1))
+
+        for text, count in tags:
+            with self.subTest():
+                self.assertContains(self.resp, text, count)
 
     def test_csrf(self):
         """Html must contains csrf"""
@@ -33,12 +36,8 @@ class SubscribeTest(TestCase):
         form = self.resp.context['form']
         self.assertIsInstance(form, SubscriptionForm)
 
-    def test_form_has_fields(self):
-        """"Form must have 4 fields"""
-        form = self.resp.context['form']
-        self.assertSequenceEqual(['name', 'cpf', 'email', 'phone'], list(form.fields))
 
-class SubscribePostTest(TestCase):
+class SubscribePostValid(TestCase):
     def setUp(self):
         data = dict(name='Henrique Bastos', cpf='12345678901',
                     email='rodolphodeales@gmail.com', phone='21-11111-1111')
@@ -52,32 +51,8 @@ class SubscribePostTest(TestCase):
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
 
-    def test_subscription_email_subject(self):
-        email = mail.outbox[0]
-        expected = 'Confirmação de inscrição'
-        self.assertEqual(expected, email.subject)
 
-    def test_subscription_email_from(self):
-        email = mail.outbox[0]
-        expected = 'rodolphodeales@gmail.com'
-
-        self.assertEqual(expected, email.from_email)
-
-    def test_subscription_email_to(self):
-        email = mail.outbox[0]
-        expected = ['rodolphodeales@gmail.com', 'rodolphodeales@gmail.com']
-
-        self.assertEqual(expected, email.to)
-
-    def test_subscription_email_body(self):
-        email = mail.outbox[0]
-
-        self.assertIn('Henrique Bastos', email.body)
-        self.assertIn('12345678901', email.body)
-        self.assertIn('rodolphodeales@gmail.com', email.body)
-        self.assertIn('21-11111-1111', email.body)
-
-class SubscribeInvalidPost(TestCase):
+class SubscribePostInvalid(TestCase):
     def setUp(self):
         self.resp = self.client.post('/inscricao/')
 
@@ -103,20 +78,3 @@ class SubscribeSuccessMessage(TestCase):
                     email='rodolphodeales@gmail.com', phone='9983328906')
         response = self.client.post('/inscricao/', data, follow=True)
         self.assertContains(response, 'Inscrição realizada com sucesso!')
-
-
-class HomeTest(TestCase):
-    def setUp(self):
-        self.response = self.client.get('/')
-
-    def test_get(self):
-        """GET / must return status code 200"""
-        self.assertEqual(200, self.response.status_code)
-
-    def test_template(self):
-        """Must use index.html"""
-        self.assertTemplateUsed(self.response, 'index.html')
-
-    def test_subscription_link(self):
-        self.assertContains(self.response, 'href="/inscricao/"')
-
