@@ -1,13 +1,13 @@
 # Eventex
 
-Sistema de Eventos enconmendados pela Morena
+Sistema de Eventos encomendados pela Morena
 
 ## Como desenvolver?
 
 1. Clone o repositório.
 2. Crie um virtualenv com python 3.5.
 3. Ative o virtualenv.
-4. Instale as dependências;.
+4. Instale as dependências.
 5. Configure a instância com o .env
 6. Execute os testes.
 
