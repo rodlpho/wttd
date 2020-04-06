@@ -2,6 +2,8 @@
 
 Sistema de Eventos encomendados pela Morena
 
+[![Build Status](https://travis-ci.org/rodlpho/wttd.svg?branch=master)](https://travis-ci.org/rodlpho/wttd)
+
 ## Como desenvolver?
 
 1. Clone o repositório.
