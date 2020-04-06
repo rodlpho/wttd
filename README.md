@@ -3,7 +3,7 @@
 Sistema de Eventos encomendados pela Morena
 
 [![Build Status](https://travis-ci.org/rodlpho/wttd.svg?branch=master)](https://travis-ci.org/rodlpho/wttd)
-
+[![Coverage Status](https://coveralls.io/repos/github/rodlpho/wttd/badge.svg)](https://coveralls.io/github/rodlpho/wttd)
 ## Como desenvolver?
 
 1. Clone o repositório.
