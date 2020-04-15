@@ -2,6 +2,7 @@ from django.core import mail
 from django.test import TestCase
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
+import hashlib
 
 
 class SubscribeGet(TestCase):
@@ -41,14 +42,16 @@ class SubscribeGet(TestCase):
 
 class SubscribePostValid(TestCase):
     def setUp(self):
-        data = dict(name='Henrique Bastos', cpf='12345678901',
+        self.data = dict(name='Henrique Bastos', cpf='12345678901',
                     email='rodolphodeales@gmail.com', phone='21-11111-1111')
 
-        self.resp = self.client.post('/inscricao/',data)
+        self.resp = self.client.post('/inscricao/', self.data)
 
     def test_post(self):
-        """Valid POST should redirect to /inscrição/1/"""
-        self.assertRedirects(self.resp, '/inscricao/1/')
+        """Valid POST should redirect to /inscrição/hashlib.md5(self.data['email'].encode())/"""
+        hash_object = hashlib.md5(self.data['email'].encode())
+        self.assertRedirects(self.resp,
+                             f'/inscricao/{hash_object.hexdigest()}/')
 
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
