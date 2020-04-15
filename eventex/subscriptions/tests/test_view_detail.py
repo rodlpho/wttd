@@ -1,17 +1,21 @@
 from django.test import TestCase
 
 from eventex.subscriptions.models import Subscription
+import hashlib
 
 
 class SubscriptionDetailGet(TestCase):
     def setUp(self):
+        email ='rodolphodeales@gmail.com'
+        hash_url =hashlib.md5(email.encode()).hexdigest()
         self.obj = Subscription.objects.create(
             name='Rodolpho',
             cpf='12345678901',
-            email='rodolpho@rodolpho.com',
-            phone='999999999'
+            email=email,
+            phone='999999999',
+            hash_url=hash_url
         )
-        self.resp = self.client.get('/inscricao/{}/'.format(self.obj.pk))
+        self.resp = self.client.get('/inscricao/{}/'.format(self.obj.hash_url))
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
