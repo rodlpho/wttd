@@ -51,8 +51,8 @@ class SubscribePostValid(TestCase):
         """Valid POST should redirect to /inscrição/hashlib.md5(self.data['email'].encode())/"""
         hash_object = hashlib.md5(self.data['email'].encode())
         self.assertRedirects(self.resp,
-                             f'/inscricao/{hash_object.hexdigest()}/')
-
+                             f"/inscricao/{hash_object.hexdigest()}/")
+                        
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
 
