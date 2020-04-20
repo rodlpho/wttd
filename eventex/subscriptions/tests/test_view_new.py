@@ -1,13 +1,14 @@
 from django.core import mail
 from django.test import TestCase
+from django.shortcuts import resolve_url as r
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 import hashlib
 
 
-class SubscribeGet(TestCase):
+class SubscriptionsNewGet(TestCase):
     def setUp(self):
-        self.resp = self.client.get('/inscricao/')
+        self.resp = self.client.get(r('subscriptions:new'))
 
     def test_get(self):
         """GET /inscticao/ must return status code 200"""
@@ -40,18 +41,18 @@ class SubscribeGet(TestCase):
         self.assertIsInstance(form, SubscriptionForm)
 
 
-class SubscribePostValid(TestCase):
+class SubscriptionsNewPost(TestCase):
     def setUp(self):
         self.data = dict(name='Henrique Bastos', cpf='12345678901',
                     email='rodolphodeales@gmail.com', phone='21-11111-1111')
 
-        self.resp = self.client.post('/inscricao/', self.data)
+        self.resp = self.client.post(r('subscriptions:new'), self.data)
 
     def test_post(self):
         """Valid POST should redirect to /inscrição/hashlib.md5(self.data['email'].encode())/"""
         hash_object = hashlib.md5(self.data['email'].encode())
-        self.assertRedirects(self.resp,
-                             f'/inscricao/{hash_object.hexdigest()}/')
+        self.assertRedirects(self.resp, r('subscriptions:detail', hash_object.hexdigest()))
+
 
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
@@ -60,13 +61,12 @@ class SubscribePostValid(TestCase):
         self.assertTrue(Subscription.objects.exists())
 
 
-class SubscribePostInvalid(TestCase):
+class SubscriptionsNewPostInvalid(TestCase):
     def setUp(self):
-        self.resp = self.client.post('/inscricao/')
+        self.resp = self.client.post(r('subscriptions:new'), {})
 
     def test_post(self):
         """Invalid POST should not redirect"""
-        response = self.client.post('/inscricao/',{})
         self.assertEqual(200, self.resp.status_code)
 
     def test_template(self):
