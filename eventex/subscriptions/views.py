@@ -31,6 +31,7 @@ def create(request):
                       {'form': form})
 
     subscription = Subscription.objects.create(**form.cleaned_data)
+    #subscription = form.save()
     subscription.hash_url = hashlib.md5(subscription.email.encode()).hexdigest()
     subscription.save()
 
