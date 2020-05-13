@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+
 from eventex.core.models import Speaker, Contact, Talk, Course
 
 
@@ -34,6 +35,7 @@ class SpeakerModelAdmin(admin.ModelAdmin):
         return obj.contact_set.phones().first()
 
     phone.short_description = 'telefone'
+
 
 class TalkModelAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
