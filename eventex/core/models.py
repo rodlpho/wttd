@@ -61,7 +61,7 @@ class Talk(models.Model):
 
 
 class Course(Talk):
-    slots = models.IntegerField()
+    slots = models.IntegerField('vagas')
 
     objects = PeriodManager()
 
