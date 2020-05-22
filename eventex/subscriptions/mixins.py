@@ -20,8 +20,8 @@ class EmailCreateMixin:
         body = render_to_string(template_name, context)
         return mail.send_mail(subject, body, from_, [from_, to])
 
-    def get_email_context_data(self, **kwargs):
-        context = dict(kwargs)
+    def get_email_context_data(self):
+        context = dict(self.kwargs)
         context.setdefault(self.get_email_context_name(), self.object)
         return context
 

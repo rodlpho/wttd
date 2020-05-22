@@ -15,12 +15,14 @@ class Subscription(models.Model):
     created_at = models.DateTimeField('criado em', auto_now_add=True)
     paid = models.BooleanField('pago', default=False)
     hash_url = models.CharField('URL', max_length=32, null=True)
+    #hash_url = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return r('subscriptions:detail', self.pk)
+        return r('subscriptions:detail', self.hash_url)
 
     class Meta:
         verbose_name = 'inscrição'

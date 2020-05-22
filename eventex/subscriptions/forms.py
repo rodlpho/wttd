@@ -4,15 +4,16 @@ from eventex.subscriptions.models import Subscription
 from eventex.subscriptions.validators import validate_cpf
 
 
-class SubscriptionForm(forms.Form):
-    class Meta:
-        model = Subscription
-        fields = ['name', 'cpf', 'email', 'phone']
-
+class SubscriptionForm(forms.ModelForm):
     name = forms.CharField(label='Nome')
     cpf = forms.CharField(label='CPF', validators=[validate_cpf])
     email = forms.EmailField(label="Email", required=False)
     phone = forms.CharField(label='Telefone', required=False)
+
+    class Meta:
+        model = Subscription
+        fields = ['name', 'cpf', 'email', 'phone']
+
 
     def clean_name(self):
         name = self.cleaned_data['name']

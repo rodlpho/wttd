@@ -29,5 +29,5 @@ class SubscriptionModelTest(TestCase):
         self.assertFalse(self.obj.paid)
 
     def test_get_absolute_url(self):
-        url = r('subscriptions:detail', self.obj.pk)
+        url = r('subscriptions:detail', self.obj.hash_url)
         self.assertEqual(url, self.obj.get_absolute_url())
