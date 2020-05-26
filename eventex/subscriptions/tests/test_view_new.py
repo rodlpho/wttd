@@ -50,8 +50,8 @@ class SubscriptionsNewPost(TestCase):
 
     def test_post(self):
         """Valid POST should redirect to /inscrição/hashlib.md5(self.data['email'].encode())/"""
-        hash_object = hashlib.md5(self.data['email'].encode())
-        self.assertRedirects(self.resp, r('subscriptions:detail', hash_object.hexdigest()))
+        #hash_object = hashlib.md5(self.data['email'].encode())
+        self.assertRedirects(self.resp, r('subscriptions:detail', ['hash_url']))
 
 
     def test_send_subscribe_email(self):
