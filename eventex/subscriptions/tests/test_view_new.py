@@ -1,6 +1,6 @@
 from django.core import mail
 from django.test import TestCase
-from django.shortcuts import resolve_url as r
+from django.shortcuts import resolve_url as r, resolve_url
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 import hashlib
@@ -48,10 +48,11 @@ class SubscriptionsNewPost(TestCase):
 
         self.resp = self.client.post(r('subscriptions:new'), self.data)
 
+
     def test_post(self):
         """Valid POST should redirect to /inscrição/hashlib.md5(self.data['email'].encode())/"""
-        #hash_object = hashlib.md5(self.data['email'].encode())
-        self.assertRedirects(self.resp, r('subscriptions:detail', ['hash_url']))
+        hash_url = self.resp.context['subscription'].hash_url
+        self.assertRedirects(self.resp, resolve_url('subscriptions:detail', hash_url))
 
 
     def test_send_subscribe_email(self):
