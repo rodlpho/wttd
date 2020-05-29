@@ -7,7 +7,6 @@ class SubscribeEmail(TestCase):
     def setUp(self):
         data = dict(name='Rodolpho', cpf='12345678901',
                     email='rodolphodeales@gmail.com', phone='21-11111-1111')
-
         self.resp = self.client.post(r('subscriptions:new'),data)
         self.email = mail.outbox[0]
 
@@ -31,9 +30,7 @@ class SubscribeEmail(TestCase):
             '12345678901',
             'rodolphodeales@gmail.com',
             '21-11111-1111',
-
         ]
         for content in contents:
             with self.subTest():
                 self.assertIn(content, self.email.body)
-

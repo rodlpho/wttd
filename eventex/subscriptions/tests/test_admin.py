@@ -1,7 +1,7 @@
 from unittest.mock import Mock
-
 from django.test import TestCase
 from eventex.subscriptions.admin import SubscriptionModelAdmin, Subscription, admin
+
 
 class SubscriptionModelAdminTest(TestCase):
     def setUp(self):
@@ -25,22 +25,9 @@ class SubscriptionModelAdminTest(TestCase):
 
     def call_action(self):
         queryset = Subscription.objects.all()
-
         mock = Mock()
         old_message_user = SubscriptionModelAdmin.message_user
         SubscriptionModelAdmin.message_user = mock
         self.model_admin.mark_as_paid(None, queryset)
         SubscriptionModelAdmin.message_user = old_message_user
         return mock
-
-
-
-
-
-
-
-
-
-
-
-
